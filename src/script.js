@@ -7,16 +7,16 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
  */
 const textureloader = new THREE.TextureLoader()
 
-const doorColorTexture = textureloader.load('/textures/door/color.jpg')
-const doorAlphaTexture = textureloader.load('/textures/door/alpha.jpg')
-const doorAmbientOcclusionTexture = textureloader.load('/textures/door/ambientOcclusion.jpg')
-const doorHeightTexture = textureloader.load('/textures/door/height.jpg')
+// const doorColorTexture = textureloader.load('/textures/door/color.jpg')
+// const doorAlphaTexture = textureloader.load('/textures/door/alpha.jpg')
+// const doorAmbientOcclusionTexture = textureloader.load('/textures/door/ambientOcclusion.jpg')
+// const doorHeightTexture = textureloader.load('/textures/door/height.jpg')
 const doorNormalTexture = textureloader.load('/textures/door/normal.jpg')
-const doorMetalnessTexture = textureloader.load('/textures/door/metalness.jpg')
-const doorRoughnessTexture = textureloader.load('/textures/door/roughness.jpg')
+// const doorMetalnessTexture = textureloader.load('/textures/door/metalness.jpg')
+// const doorRoughnessTexture = textureloader.load('/textures/door/roughness.jpg')
 
-const matcapTexture = textureloader.load('/textures/matcaps/1.png')
-const gradientTexture = textureloader.load('/textures/gradients/3.png')
+// const matcapTexture = textureloader.load('/textures/matcaps/1.png')
+// const gradientTexture = textureloader.load('/textures/gradients/3.png')
 
 
 
@@ -48,7 +48,7 @@ const scene = new THREE.Scene()
 
 // Mesh Normals material - normals contain data about the direction of reflection and refraction of light of the outside surface of the geometry
 const material = new THREE.MeshNormalMaterial()
-// material.map = doorNormalTexture
+material.map = doorNormalTexture
 // material.wireframe = true
 material.smoothShading = true
 
@@ -62,7 +62,7 @@ const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(2, 2),
     material
 )
-plane.position.x = -2
+plane.position.x = 4
 
 const torus = new THREE.Mesh(
     new THREE.TorusGeometry(0.3, 0.2, 16, 32),
@@ -70,7 +70,19 @@ const torus = new THREE.Mesh(
 )
 torus.position.y = 1
 
-scene.add(sphere, plane, torus)
+
+
+const material1 = new THREE.MeshNormalMaterial()
+material.map = doorNormalTexture
+// material1.wireframe = true
+// material1.smoothShading = true
+const torusknot = new THREE.Mesh(
+    new THREE.TorusKnotGeometry(8, 3, 64, 15, 7, 3),
+    material1
+)
+torusknot.position.z = -35
+
+scene.add(sphere, plane, torus, torusknot)
 
 /**
  * Sizes
@@ -130,10 +142,12 @@ const tick = () =>
     // Update Obkects
     sphere.rotation.y = 0.1 * elapsedTime
     sphere.rotation.x = 0.17 * elapsedTime
-    plane.rotation.y = 0.11 * elapsedTime
-    plane.rotation.x = 0.3 * elapsedTime
+    torusknot.rotation.y = 0.16 * elapsedTime
+    torusknot.rotation.x = 0.3 * elapsedTime
     torus.rotation.y = 0.16 * elapsedTime
     torus.rotation.z = 0.12 * elapsedTime
+    plane.rotation.y = 0.16 * elapsedTime
+    plane.rotation.z = 0.12 * elapsedTime
 
 
     // Update controls
