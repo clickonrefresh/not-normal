@@ -74,7 +74,7 @@ torus.position.y = 1
 
 const material1 = new THREE.MeshNormalMaterial()
 material.map = doorNormalTexture
-// material1.wireframe = true
+material1.wireframe = true
 // material1.smoothShading = true
 const torusknot = new THREE.Mesh(
     new THREE.TorusKnotGeometry(8, 3, 64, 15, 7, 3),
