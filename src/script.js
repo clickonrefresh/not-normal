@@ -45,13 +45,15 @@ const scene = new THREE.Scene()
 // material.opacity = 0.6
 // material.transparent = true
 // material.alphaMap = doorAlphaTexture
-// material.side = THREE.BackSide
+// material.side = THREE.BackSide DoubleSide FrontSide - These arent good for performance
+
 
 // Mesh Normals material - normals contain data about the direction of reflection and refraction of light of the outside surface of the geometry
 const material = new THREE.MeshNormalMaterial()
 // material.map = doorNormalTexture
 // material.wireframe = true
 material.smoothShading = true
+
 
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 16, 16),
@@ -64,6 +66,7 @@ const plane = new THREE.Mesh(
     material
 )
 plane.position.z = -4
+
 
 const torus = new THREE.Mesh(
     new THREE.TorusGeometry(0.3, 0.2, 16, 32),
@@ -90,7 +93,7 @@ plane1.position.z = -2
 
 const material2 = new THREE.MeshNormalMaterial()
 const torus2 = new THREE.Mesh(
-    new THREE.TorusGeometry(0.3, 0.3, 24, 16, 32),
+    new THREE.TorusGeometry(1.0, 0.4, 40, 132, 32),
     material2
 )
 material2.wireframe = true
