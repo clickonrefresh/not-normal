@@ -1,6 +1,16 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+// import * as dat from 'dat.gui'
+import {Pane} from 'tweakpane'
+
+/**
+ * Debug UI
+ */
+
+// const gui = new dat.GUI
+const pane = new Pane()
+
 
 /**
  * Textures
@@ -15,10 +25,13 @@ const doorNormalTexture = textureloader.load('/textures/door/normal.jpg')
 const doorMetalnessTexture = textureloader.load('/textures/door/metalness.jpg')
 const doorRoughnessTexture = textureloader.load('/textures/door/roughness.jpg')
 
-const matcapTexture = textureloader.load('/textures/matcaps/7.png')
+const matcapTexture = textureloader.load('/textures/matcaps/3.png')
 const matcapTexture1 = textureloader.load('/textures/matcaps/8.png')
-const gradientTexture = textureloader.load('/textures/gradients/3.png')
+const gradientTexture = textureloader.load('/textures/gradients/3.jpg')
 
+gradientTexture.minFilter = THREE.NearestFilter
+gradientTexture.magFilter = THREE.NearestFilter
+gradientTexture.generateMipmaps = false
 
 
 /**
@@ -65,7 +78,7 @@ const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(2, 2),
     material
 )
-plane.position.z = -4
+plane.position.z = -2
 
 
 const torus = new THREE.Mesh(
@@ -73,6 +86,9 @@ const torus = new THREE.Mesh(
     material
 )
 torus.position.y = 1
+
+
+
 
 const material1 = new THREE.MeshMatcapMaterial()
 material1.matcap = matcapTexture
@@ -83,13 +99,15 @@ const torus1 = new THREE.Mesh(
 torus1.position.y = -1
 
 
+
+
 const material3 = new THREE.MeshMatcapMaterial()
 material3.matcap = matcapTexture1
 const plane1 = new THREE.Mesh(
-    new THREE.PlaneGeometry(30, 30),
+    new THREE.PlaneGeometry(70, 33),
     material3
 )
-plane1.position.z = -2
+plane1.position.z = -3
 
 const material2 = new THREE.MeshNormalMaterial()
 const torus2 = new THREE.Mesh(
@@ -97,7 +115,10 @@ const torus2 = new THREE.Mesh(
     material2
 )
 material2.wireframe = true
-torus2.position.z = 2
+torus2.position.z = 3
+
+
+
 
 
 const material4 = new THREE.MeshDepthMaterial()
@@ -110,7 +131,106 @@ material4.wireframe = true
 sphere1.position.z = 9
 
 
-scene.add(sphere, sphere1, plane, plane1, torus, torus1, torus2)
+/**
+ * Mesh Lambert Material - requires ambient lighting and point light, ie requires occlusion to look right. Has good performance but strange visual effect.
+ */
+const material5 = new THREE.MeshLambertMaterial()
+const torus3 = new THREE.Mesh(
+    new THREE.TorusGeometry(0.5, 0.2, 16, 32),
+    material5
+)
+
+torus3.position.z = 2
+
+/**
+ * Phong Material - just the opposite of Lambert, use phong for objects that need higher definition/quality than objects out of focus or not of focal value
+ */
+const material6 = new THREE.MeshPhongMaterial()
+material6.shininess = 800
+material6.specular = new THREE.Color(0x1188ff)
+const sphere2 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.3, 15, 15),
+    material6
+)
+
+sphere2.position.z = 3.5
+
+
+
+/**
+ * Toon Material - just the opposite of Lambert, use phong for objects that need higher definition/quality than objects out of focus or not of focal value
+ */
+
+ 
+const material7 = new THREE.MeshToonMaterial()
+material7.gradientMap = gradientTexture
+
+const torus4 = new THREE.Mesh(
+    new THREE.TorusGeometry(0.4, 0.2, 16, 32),
+    material7,
+ 
+)
+torus4.position.x = -1
+// torus4.position.z = 11
+
+
+/**
+ * 
+ */
+/**
+ * Standard Material - more realistic than phong and lambert. * has features like metalness and roughness *
+ */
+const material8 = new THREE.MeshStandardMaterial()
+material8.metalness = 0.5
+material8.roughness = 0.5
+material8.map = doorColorTexture
+material8.aoMap = doorAmbientOcclusionTexture
+material8.aoMapIntensity = 1
+material8.displacementMap = doorHeightTexture
+material8.displacementScale =0.05
+material8.metalnessMap = doorMetalnessTexture
+material8.roughnessMap = doorRoughnessTexture
+material8.normalMap = doorNormalTexture
+material8.normalScale.set(0.5, 0.5)
+
+material8.transparent = true
+material8.alphaMap = doorAlphaTexture
+
+
+// gui.add(material8, 'metalness').min(0).max(1).step(0.0001)
+// gui.add(material8, 'roughness').min(0).max(1).step(0.0001)
+// gui.add(material8, 'aoMapIntensity').min(0).max(10).step(0.001)
+// gui.add(material8, 'displacementScale').min(0).max(1).step(0.0001)
+// gui.add(material8, 'normalScale').min(0).max(1).step(0.0001) doesnt work syntax wrong somewhere
+
+
+
+// const torus5 = new THREE.Mesh(
+//     new THREE.TorusGeometry(0.9, 0.2, 64, 64, 64),
+//     material8
+// )
+// torus5.position.z = 5.5
+
+// torus5.geometry.setAttribute(
+//     'uv2', 
+//     new THREE.BufferAttribute(torus5.geometry.attributes.uv.array, 2))
+
+
+const plane2 = new THREE.Mesh(
+    new THREE.PlaneGeometry(2, 2, 5, 5),
+    material8
+)
+plane2.position.z = 11
+
+// console.log(plane2.geometry.attributes.uv.array)
+plane2.geometry.setAttribute(
+    'uv2', 
+    new THREE.BufferAttribute(plane2.geometry.attributes.uv.array, 2))
+
+
+
+
+scene.add(sphere, sphere1, sphere2, plane, plane1, plane2, torus, torus1, torus2, torus3, torus4)
 
 
 
@@ -124,8 +244,21 @@ scene.add(ambientLight)
 const pointLight = new THREE.PointLight(0xffffff, 0.5)
 pointLight.position.x = -2
 pointLight.position.y = 3
-pointLight.position.z = -4
-scene.add(pointLight)
+pointLight.position.z = 4
+
+
+const pointLight1 = new THREE.PointLight(0xffffff, 0.7)
+pointLight1.position.x = 2
+pointLight1.position.y = -1
+pointLight1.position.z = 17
+
+
+const pointLight2 = new THREE.PointLight(0xffffff, 0.3)
+pointLight2.position.x = -1
+pointLight2.position.y = -1
+pointLight2.position.z = 1
+
+scene.add(pointLight, pointLight1, pointLight2)
 
 
 /**
@@ -157,7 +290,7 @@ window.addEventListener('resize', () => {
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 0
 camera.position.y = 0
-camera.position.z = 20
+camera.position.z = 18
 scene.add(camera)
 
 // Controls
@@ -187,12 +320,13 @@ const tick = () => {
     sphere1.rotation.y = 0.17 * elapsedTime
     plane.rotation.y = 0.11 * elapsedTime
     plane.rotation.x = 0.3 * elapsedTime
-    torus.rotation.y = 0.16 * elapsedTime
-    torus.rotation.z = 0.12 * elapsedTime
+    torus.rotation.y = -0.16 * elapsedTime
+    torus.rotation.z = -0.12 * elapsedTime
     torus1.rotation.y = 0.16 * elapsedTime
     torus1.rotation.z = -0.12 * elapsedTime
     torus2.rotation.z = -0.16 * elapsedTime
     // torus2.rotation.z = 0.12 * elapsedTime
+    torus4.rotation.x = 0.09 * elapsedTime
 
 
     // Update controls
