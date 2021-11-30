@@ -3,13 +3,20 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // import * as dat from 'dat.gui'
 import {Pane} from 'tweakpane'
+import GUI from 'lil-gui'
 
 /**
  * Debug UI
  */
 
-// const gui = new dat.GUI
-const pane = new Pane()
+// const gui = new GUI({
+//         title: 'Control UI',
+//         expanded: true,
+//       })
+const pane = new Pane({
+    title: 'TweakKit',
+    expanded: true,
+})
 
 
 /**
@@ -197,7 +204,17 @@ material8.transparent = true
 material8.alphaMap = doorAlphaTexture
 
 
+
+
+/**
+ * TWEAKPANE
+ */
+// const pane = new Pane({
+//     title: 'Parameters',
+//     expanded: true,
+//   });
 // gui.add(material8, 'metalness').min(0).max(1).step(0.0001)
+pane.addInput(material8, 'metalness')
 // gui.add(material8, 'roughness').min(0).max(1).step(0.0001)
 // gui.add(material8, 'aoMapIntensity').min(0).max(10).step(0.001)
 // gui.add(material8, 'displacementScale').min(0).max(1).step(0.0001)
