@@ -2,34 +2,13 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // import * as dat from 'dat.gui'
-import {Pane} from 'tweakpane'
-// import GUI from 'lil-gui'
-// import styled from 'styled-components'
-
-
-// const Kontainer = styled.button`
-//     position: left;
-// `
-
+import GUI from 'lil-gui'
 
 /**
  * Debug UI
  */
 
-
-// const gui = new GUI({
-//         title: 'Control UI',
-//         expanded: true,
- 
-//       })
-
-
-
-const pane = new Pane({
-    autoPlace: false,
-    title: 'TweakKit',
-    expanded: true,
-})
+const gui = new GUI()
 
 
 /**
@@ -155,6 +134,7 @@ sphere1.position.z = 9
  * Mesh Lambert Material - requires ambient lighting and point light, ie requires occlusion to look right. Has good performance but strange visual effect.
  */
 const material5 = new THREE.MeshLambertMaterial()
+material5.color = new THREE.Color('yellow')
 const torus3 = new THREE.Mesh(
     new THREE.TorusGeometry(0.5, 0.2, 16, 32),
     material5
@@ -168,6 +148,7 @@ torus3.position.z = 2
 const material6 = new THREE.MeshPhongMaterial()
 material6.shininess = 800
 material6.specular = new THREE.Color(0x1188ff)
+material6.color = new THREE.Color('green')
 const sphere2 = new THREE.Mesh(
     new THREE.SphereGeometry(0.3, 15, 15),
     material6
@@ -184,7 +165,7 @@ sphere2.position.z = 3.5
  
 const material7 = new THREE.MeshToonMaterial()
 material7.gradientMap = gradientTexture
-
+material7.color = new THREE.Color('violet')
 const torus4 = new THREE.Mesh(
     new THREE.TorusGeometry(0.4, 0.2, 16, 32),
     material7,
@@ -217,21 +198,10 @@ material8.transparent = true
 material8.alphaMap = doorAlphaTexture
 
 
-
-
-/**
- * TWEAKPANE
- */
-// const pane = new Pane({
-//     title: 'Parameters',
-//     expanded: true,
-//   });
-// gui.add(material8, 'metalness').min(0).max(1).step(0.0001)
-pane.addInput(material8, 'metalness',{min: 0, max: 1, step: 0.0001})
-pane.addInput(material8, 'roughness',{min: 0, max: 1, step: 0.0001})
-pane.addInput(material8, 'aoMapIntensity',{min: 0, max: 1, step: 0.0001})
-pane.addInput(material8, 'displacementScale',{min: 0, max: 1, step: 0.0001})
-
+gui.add(material8, 'metalness').min(0).max(1).step(0.0001)
+gui.add(material8, 'roughness').min(0).max(1).step(0.0001)
+gui.add(material8, 'aoMapIntensity').min(0).max(10).step(0.001)
+gui.add(material8, 'displacementScale').min(0).max(1).step(0.0001)
 // gui.add(material8, 'normalScale').min(0).max(1).step(0.0001) doesnt work syntax wrong somewhere
 
 
@@ -269,7 +239,7 @@ scene.add(sphere, sphere1, sphere2, plane, plane1, plane2, torus, torus1, torus2
  * Lights
  */
 
-const ambientLight = new THREE.AmbientLight(0xfffff, 0.5)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
 scene.add(ambientLight)
 
 const pointLight = new THREE.PointLight(0xffffff, 0.5)
@@ -278,9 +248,9 @@ pointLight.position.y = 3
 pointLight.position.z = 4
 
 
-const pointLight1 = new THREE.PointLight(0xffffff, 0.5)
+const pointLight1 = new THREE.PointLight(0xffffff, 0.6)
 pointLight1.position.x = 2
-pointLight1.position.y = -2
+pointLight1.position.y = -1
 pointLight1.position.z = 17
 
 
