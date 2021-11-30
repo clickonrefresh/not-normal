@@ -16,6 +16,8 @@ const gui = new GUI()
  */
 const textureloader = new THREE.TextureLoader()
 
+const cubeTextureLoader = new THREE.CubeTextureLoader()
+
 const doorColorTexture = textureloader.load('/textures/door/color.jpg')
 const doorAlphaTexture = textureloader.load('/textures/door/alpha.jpg')
 const doorAmbientOcclusionTexture = textureloader.load('/textures/door/ambientOcclusion.jpg')
@@ -31,6 +33,17 @@ const gradientTexture = textureloader.load('/textures/gradients/3.jpg')
 gradientTexture.minFilter = THREE.NearestFilter
 gradientTexture.magFilter = THREE.NearestFilter
 gradientTexture.generateMipmaps = false
+
+
+const environmentMapTexture = cubeTextureLoader.load([
+    '/textures/environmentMaps/1/px.jpg',
+    '/textures/environmentMaps/1/nx.jpg',
+    '/textures/environmentMaps/1/py.jpg',
+    '/textures/environmentMaps/1/ny.jpg',
+    '/textures/environmentMaps/1/pz.jpg',
+    '/textures/environmentMaps/1/nz.jpg',
+])
+
 
 
 /**
@@ -162,14 +175,14 @@ sphere2.position.z = 3.5
  * Toon Material - just the opposite of Lambert, use phong for objects that need higher definition/quality than objects out of focus or not of focal value
  */
 
- 
+
 const material7 = new THREE.MeshToonMaterial()
 material7.gradientMap = gradientTexture
 material7.color = new THREE.Color('violet')
 const torus4 = new THREE.Mesh(
     new THREE.TorusGeometry(0.4, 0.2, 16, 32),
     material7,
- 
+
 )
 torus4.position.x = -1
 // torus4.position.z = 11
@@ -188,7 +201,7 @@ material8.map = doorColorTexture
 material8.aoMap = doorAmbientOcclusionTexture
 material8.aoMapIntensity = 1
 material8.displacementMap = doorHeightTexture
-material8.displacementScale =0.05
+material8.displacementScale = 0.05
 material8.metalnessMap = doorMetalnessTexture
 material8.roughnessMap = doorRoughnessTexture
 material8.normalMap = doorNormalTexture
@@ -201,8 +214,8 @@ material8.alphaMap = doorAlphaTexture
 gui.add(material8, 'metalness').min(0).max(1).step(0.0001)
 gui.add(material8, 'roughness').min(0).max(1).step(0.0001)
 gui.add(material8, 'aoMapIntensity').min(0).max(10).step(0.001)
-gui.add(material8, 'displacementScale').min(0).max(1).step(0.0001)
-// gui.add(material8, 'normalScale').min(0).max(1).step(0.0001) doesnt work syntax wrong somewhere
+gui.add(material8, 'displacementScale').min(0).max(1).step(0.0001) //displace is also normal
+
 
 
 
@@ -225,13 +238,60 @@ plane2.position.z = 11
 
 // console.log(plane2.geometry.attributes.uv.array)
 plane2.geometry.setAttribute(
-    'uv2', 
+    'uv2',
     new THREE.BufferAttribute(plane2.geometry.attributes.uv.array, 2))
 
 
+/**
+ * Physical Material - provides clearcoat, more gpu intensive
+ */
+ const material9 = new THREE.MeshPhysicalMaterial()
+ material9.clearcoat = 0.5
+ material9.color = new THREE.Color('orange')
+ material9.smoothShading =true
+ const sphere3 = new THREE.Mesh(
+     new THREE.SphereGeometry(0.5, 16, 16),
+     material9
+ )
+ 
+ sphere3.position.z = 6.5
 
 
-scene.add(sphere, sphere1, sphere2, plane, plane1, plane2, torus, torus1, torus2, torus3, torus4)
+
+/**
+ * EnvironmentMap
+ */
+ const material10 = new THREE.MeshStandardMaterial()
+ material10.metalness = 0.7
+ material10.roughness = 0.2
+material10.envMap = environmentMapTexture
+
+ gui.add(material10, 'metalness').min(0).max(1).step(0.0001)
+ gui.add(material10, 'roughness').min(0).max(1).step(0.0001)
+
+ const sphere4 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    material10
+)
+sphere4.position.x = 1
+sphere4.position.z = 15
+
+const plane3 = new THREE.Mesh(
+    new THREE.PlaneGeometry(2, 2),
+    material10
+)
+plane3.position.x = -2
+plane3.position.z = 15
+
+const torus5 = new THREE.Mesh(
+    new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+    material10
+)
+torus5.position.y = 1
+torus5.position.z = 15
+
+
+scene.add(sphere, sphere1, sphere2, sphere3, sphere4, plane, plane1, plane2, plane3, torus, torus1, torus2, torus3, torus4, torus5,)
 
 
 
