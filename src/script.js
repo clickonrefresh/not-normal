@@ -3,17 +3,30 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // import * as dat from 'dat.gui'
 import {Pane} from 'tweakpane'
-import GUI from 'lil-gui'
+// import GUI from 'lil-gui'
+// import styled from 'styled-components'
+
+
+// const Kontainer = styled.button`
+//     position: left;
+// `
+
 
 /**
  * Debug UI
  */
 
+
 // const gui = new GUI({
 //         title: 'Control UI',
 //         expanded: true,
+ 
 //       })
+
+
+
 const pane = new Pane({
+    autoPlace: false,
     title: 'TweakKit',
     expanded: true,
 })
@@ -214,10 +227,11 @@ material8.alphaMap = doorAlphaTexture
 //     expanded: true,
 //   });
 // gui.add(material8, 'metalness').min(0).max(1).step(0.0001)
-pane.addInput(material8, 'metalness')
-// gui.add(material8, 'roughness').min(0).max(1).step(0.0001)
-// gui.add(material8, 'aoMapIntensity').min(0).max(10).step(0.001)
-// gui.add(material8, 'displacementScale').min(0).max(1).step(0.0001)
+pane.addInput(material8, 'metalness',{min: 0, max: 1, step: 0.0001})
+pane.addInput(material8, 'roughness',{min: 0, max: 1, step: 0.0001})
+pane.addInput(material8, 'aoMapIntensity',{min: 0, max: 1, step: 0.0001})
+pane.addInput(material8, 'displacementScale',{min: 0, max: 1, step: 0.0001})
+
 // gui.add(material8, 'normalScale').min(0).max(1).step(0.0001) doesnt work syntax wrong somewhere
 
 
@@ -264,9 +278,9 @@ pointLight.position.y = 3
 pointLight.position.z = 4
 
 
-const pointLight1 = new THREE.PointLight(0xffffff, 0.7)
+const pointLight1 = new THREE.PointLight(0xffffff, 0.5)
 pointLight1.position.x = 2
-pointLight1.position.y = -1
+pointLight1.position.y = -2
 pointLight1.position.z = 17
 
 
@@ -307,7 +321,7 @@ window.addEventListener('resize', () => {
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 0
 camera.position.y = 0
-camera.position.z = 18
+camera.position.z = 12.5
 scene.add(camera)
 
 // Controls

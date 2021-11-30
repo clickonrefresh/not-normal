@@ -19,6 +19,7 @@
     "portfinder-sync": "0.0.2",
     "raw-loader": "^4.0.2",
     "style-loader": "^3.3.1",
+    "styled-components": "^5.3.3",
     "three": "^0.134.0",
     "tweakpane": "^3.0.6",
     "webpack": "^5.60.0",
@@ -27,6 +28,7 @@
     "webpack-merge": "^5.8.0"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^2.0.2",
     "lil-gui": "^0.14.0"
   }
 }
