@@ -1,15 +1,22 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-// import * as dat from 'dat.gui'
+
+// import typefaceFont from 'three/examples/fonts/optimer_regular.typeface.json'
+// console.log(typefaceFont)
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
+
 import GUI from 'lil-gui'
+// import {Pane} from 'tweakpane';
+
 
 /**
  * Debug UI
  */
 
 const gui = new GUI()
-
+// const pane = new Pane();
 
 /**
  * Textures
@@ -54,6 +61,39 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+
+
+
+/**
+ * Fonts
+ */
+const fontLoader = new FontLoader()
+
+fontLoader.load(
+    '/fonts/optimer_regular.typeface.json',
+    (font) =>
+    {
+        const textGeometry = new TextGeometry(
+            'First Material',
+            {
+                font,
+                size: 1,
+                height: 1,
+                curveSegments: 10,
+                bevelEnabled: true,
+                bevelThickness: 0.03,
+                bevelSize: 0.02,
+                bevelOffset: 0,
+                bevelSegments: 5,
+
+            }
+        )
+        const textMaterial = new THREE.MeshBasicMaterial()
+        const text = new THREE.Mesh(textGeometry, textMaterial)
+        scene.add(text)
+    }
+)
+
 
 /**
  * Objects - meshes & materials
