@@ -533,7 +533,7 @@ scene.add(sphere, sphere1, sphere2, sphere3, sphere4, plane, plane1, plane2, pla
             }
         )
          const textGeometryLink = new TextGeometry(
-            'Visit Me',
+            'Explore Threejs Basic Geometries & Textures',
             {
                 font,
                 size: 0.7,
@@ -622,9 +622,9 @@ scene.add(sphere, sphere1, sphere2, sphere3, sphere4, plane, plane1, plane2, pla
          textGeometry12.center()
  
          const textLink = new THREE.Mesh(textGeometryLink, material3)
-         textLink.position.y = -8
+         
         //  textLink.position.x = -8
-         textLink.position.z = -1.5
+         textLink.position.z = 8
          textGeometryLink.center()
 
          // text.rotation.y = 0.1 rotation here only affexcts the positioning
