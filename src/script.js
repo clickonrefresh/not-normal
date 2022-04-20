@@ -536,8 +536,8 @@ scene.add(sphere, sphere1, sphere2, sphere3, sphere4, plane, plane1, plane2, pla
             'Explore Threejs Basic Geometries & Textures',
             {
                 font,
-                size: 0.8,
-                height: 0.09,
+                size: 1,
+                height: 0.19,
                 curveSegments: 5,
                 bevelEnabled: true,
                 bevelThickness: 0.001,
@@ -621,7 +621,7 @@ scene.add(sphere, sphere1, sphere2, sphere3, sphere4, plane, plane1, plane2, pla
          text12.position.z =  15
          textGeometry12.center()
  
-         const textLink = new THREE.Mesh(textGeometryLink, material3)
+         const textLink = new THREE.Mesh(textGeometryLink, material8a)
          textLink.position.y = 8
         //  textLink.position.x = -8
          textLink.position.z = -2.9
